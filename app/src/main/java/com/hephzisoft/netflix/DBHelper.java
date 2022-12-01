@@ -7,10 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 
-import com.google.android.material.snackbar.Snackbar;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -28,13 +26,13 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table users (id integer  primary key autoincrement , username text unique , email text , password text, is_loggedin boolean)");
-        db.execSQL("create table dishes (id integer primary key autoincrement, name text, ingredients text, process text, image_url text)");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists users");
-        db.execSQL("drop table if exists dishes");
+
         onCreate(db);
     }
 
@@ -88,41 +86,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return new String[]{String.valueOf(count), loggedin_user};
     }
-//    CREATE DISH
 
-    public void createDish(String name, String ingredients, String process, String image_url) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-
-        cv.put("name", name);
-        cv.put("ingredients", ingredients);
-        cv.put("process", process);
-        cv.put("image_url", image_url);
-
-        db.insert("dishes", null, cv);
-    }
-    public Cursor getDishes(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("select id, name , image_url, ingredients , process from dishes", new String[]{});
-    }
-
-//    DELETE DISHES
-
-    public boolean deleteDish(int id){
-        SQLiteDatabase db = this.getWritableDatabase();
-        try{
-        db.delete("dishes",String.format("id= %d", id), new String[]{});
-
-        return true;
-        }catch(Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public void editDish(int id, String ingredients, String process, String image_url){
-
-    }
 }
 
 
